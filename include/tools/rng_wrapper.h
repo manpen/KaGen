@@ -12,38 +12,29 @@
 #include <random>
 
 #include "methodR.hpp"
-#include "var_gen.h"
 
 namespace kagen {
 
-template <typename LPStocc = VarGen<LPFloat>, typename HPStocc = VarGen<>>
-class RNGWrapper {
+class RNGWrapperImpl {
  public:
-  RNGWrapper(const PGeneratorConfig &config)
-      : config_(config),
-        lp_gen_(0),
-        hp_gen_(0) {};
+  RNGWrapperImpl(const PGeneratorConfig &config)
+      : config_(config)
+  {};
 
   HPFloat GenerateHypergeometric(SInt seed, HPFloat n, HPFloat m, HPFloat N) {
-    hp_gen_.RandomInit(seed);
-    HPFloat variate = 0;
-    if (config_.use_binom)
-      variate = hp_gen_.Binomial(n, (double)(m / N));
-    else
-      variate = hp_gen_.Hypergeometric(n, m, N);
-    return variate;
-  }
-
-  HPFloat GenerateBinomial(SInt seed, HPFloat n, double p) {
-    hp_gen_.RandomInit(seed);
-    HPFloat variate = hp_gen_.Binomial(n, p);
-    return variate;
+    if (config_.use_binom) {
+      return GenerateBinomial(seed, n, (double) (m / N));
+    } else {
+      if (m < 1) return 0;
+      hyp_.seed(seed);
+      return hyp_(n, N-n, m);
+    }
   }
 
   SInt GenerateBinomial(SInt seed, SInt n, double p) {
-    lp_gen_.RandomInit(seed);
-    HPFloat variate = lp_gen_.Binomial(n, p);
-    return variate;
+    rng_.seed(seed);
+    std::binomial_distribution<SInt> bin(n, p);
+    return bin(rng_);
   }
 
   template <typename F>
@@ -56,9 +47,11 @@ class RNGWrapper {
  private:
   const PGeneratorConfig &config_;
 
-  LPStocc lp_gen_;
-  HPStocc hp_gen_;
+  std::mt19937_64 rng_;
+  sampling::hypergeometric_distribution<> hyp_;
 };
+
+using RNGWrapper = RNGWrapperImpl;
 
 }
 #endif

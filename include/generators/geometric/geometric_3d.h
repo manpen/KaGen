@@ -67,7 +67,7 @@ class Geometric3D {
   PEID rank_, size_;
 
   // Variates
-  RNGWrapper<> rng_;
+  RNGWrapper rng_;
   Mersenne mersenne_;
 
   // Constants and variables

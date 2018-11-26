@@ -142,7 +142,7 @@ class Hyperbolic {
   PEID rank_, size_;
 
   // Variates
-  RNGWrapper<VarGen<LPFloat>, VarGen<>> rng_;
+  RNGWrapper rng_;
   Mersenne mersenne;
   SortedMersenne sorted_mersenne;
 

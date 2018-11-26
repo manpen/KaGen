@@ -69,7 +69,7 @@ class Geometric2D {
   PEID rank_, size_;
 
   // Variates
-  RNGWrapper<> rng_;
+  RNGWrapper rng_;
   Mersenne mersenne;
 
   // Constants and variables

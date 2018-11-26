@@ -76,7 +76,7 @@ class GNMUndirected {
   SInt start_node_, end_node_, num_nodes_;
 
   // Variates
-  RNGWrapper<> rng_;
+  RNGWrapper rng_;
 
   // I/O
   GeneratorIO<> io_;

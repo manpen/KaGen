@@ -79,7 +79,7 @@ class GNPDirected {
   PGeneratorConfig config_;
 
   // Variates
-  RNGWrapper<> rng_;
+  RNGWrapper rng_;
 
   // I/O
   GeneratorIO<> io_;
